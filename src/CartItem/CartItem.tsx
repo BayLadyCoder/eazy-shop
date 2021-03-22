@@ -24,6 +24,7 @@ const CartItem: React.FC<Props> = ({ item, addToCart, removeFromCart }) => {
         </div>
         <div className="buttons">
           <Button
+            className="button"
             size="small"
             disableElevation
             variant="contained"
@@ -33,6 +34,7 @@ const CartItem: React.FC<Props> = ({ item, addToCart, removeFromCart }) => {
           </Button>
           <p>{item.amount}</p>
           <Button
+            className="button"
             size="small"
             disableElevation
             variant="contained"
