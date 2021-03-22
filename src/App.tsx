@@ -9,7 +9,7 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Badge from "@material-ui/core/Badge";
 
 // Styles
-import { Wrapper } from "./App.styles";
+import { StyledButton, Wrapper } from "./App.styles";
 import Item from "./Item/Item";
 
 //Types
@@ -27,12 +27,16 @@ const getProducts = async (): Promise<CartItemType[]> =>
   await (await fetch("https://fakestoreapi.herokuapp.com/products")).json();
 
 const App = () => {
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+
   const { data, isLoading, error } = useQuery<CartItemType[]>(
     "product",
     getProducts
   );
 
-  const getTotalItems = () => null;
+  const getTotalItems = (items: CartItemType[]) =>
+    items.reduce((acc: number, item) => acc + item.amount, 0);
   const handleAddToCart = (item: CartItemType) => null;
   const handleRemoveFromCart = () => null;
 
@@ -41,6 +45,18 @@ const App = () => {
 
   return (
     <Wrapper>
+      <Drawer
+        anchor="right"
+        open={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+      >
+        Cart goes here
+      </Drawer>
+      <StyledButton onClick={() => setIsCartOpen(true)}>
+        <Badge badgeContent={() => getTotalItems(cartItems)} color="error">
+          <AddShoppingCartIcon />
+        </Badge>
+      </StyledButton>
       <Grid container spacing={3}>
         {data?.map((item) => (
           <Grid item key={item.id} xs={12} sm={4}>
