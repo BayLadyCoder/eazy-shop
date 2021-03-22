@@ -13,7 +13,14 @@ const Cart: React.FC<Props> = ({ cartItems, addToCart, removeFromCart }) => {
     <Wrapper>
       <h2>Your Shopping Cart</h2>
       {cartItems.length > 0 ? (
-        cartItems.map((item) => <CartItem />)
+        cartItems.map((item) => (
+          <CartItem
+            key={item.id}
+            item={item}
+            addToCart={addToCart}
+            removeFromCart={removeFromCart}
+          />
+        ))
       ) : (
         <p>Cart is empty.</p>
       )}
