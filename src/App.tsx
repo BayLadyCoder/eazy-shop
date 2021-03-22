@@ -92,7 +92,7 @@ const App = () => {
         />
       </Drawer>
       <StyledButton onClick={() => setIsCartOpen(true)}>
-        <Badge badgeContent={() => getTotalItems(cartItems)} color="error">
+        <Badge badgeContent={getTotalItems(cartItems)} color="error">
           <AddShoppingCartIcon />
         </Badge>
       </StyledButton>
