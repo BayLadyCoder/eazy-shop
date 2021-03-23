@@ -41,7 +41,7 @@ export const productReducer = (state: ProductState = ProductInitialState, action
     }
 }
 
-export const cartReducer = (state: CartState = CartInitialState, action: Action) {
+export const cartReducer = (state: CartState = CartInitialState, action: Action) => {
     const { type, payload } = action;
 
     switch (type) {
