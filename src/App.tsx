@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useQuery } from "react-query";
-
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { apiGetAllProducts } from "./state/actions";
 // Components
 import Drawer from "@material-ui/core/Drawer";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -8,78 +8,28 @@ import Grid from "@material-ui/core/Grid";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Badge from "@material-ui/core/Badge";
 import Cart from "./components/Cart/Cart";
-
 // Styles
 import { StyledButton, Wrapper } from "./App.styles";
 import Item from "./components/Item/Item";
-
 //Types
-import { CartItemType } from "./Types";
-// export type CartItemType = {
-//   id: number;
-//   title: string;
-//   description: string;
-//   category: string;
-//   price: number;
-//   image: string;
-//   amount: number;
-// };
+import { CartItemType, AppState } from "./Types";
 
-const getProducts = async (): Promise<CartItemType[]> => {
-  const res = await fetch("https://fakestoreapi.herokuapp.com/products");
-  const data = await res.json();
-  return data;
-};
-
-const App = () => {
+const App: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
-  const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const products = useSelector((state: AppState) => state.products.products);
+  const items = useSelector((state: AppState) => state.cart.items);
+  const dispatch = useDispatch();
 
-  const { data, isLoading, error } = useQuery<CartItemType[]>(
-    "product",
-    getProducts
-  );
+  useEffect(() => {
+    dispatch(apiGetAllProducts());
+  }, [dispatch]);
 
   const getTotalItems = (items: CartItemType[]) =>
     items.reduce((acc: number, item) => acc + item.amount, 0);
 
-  const handleAddToCart = (clickedItem: CartItemType) => {
-    setCartItems((prev) => {
-      // 1. Is the item is already added in the cart?
-      const isItemInCart = prev.find((item) => item.id === clickedItem.id);
+  console.log(items);
 
-      if (isItemInCart) {
-        return prev.map((item) => {
-          if (item.id === clickedItem.id) {
-            return { ...item, amount: item.amount + 1 };
-          } else {
-            return item;
-          }
-        });
-      } else {
-        return [...prev, { ...clickedItem, amount: 1 }];
-      }
-    });
-  };
-
-  const handleRemoveFromCart = (id: number) => {
-    setCartItems((prev) =>
-      prev.reduce((acc, item) => {
-        if (item.id === id) {
-          if (item.amount === 0) {
-            return acc;
-          } else {
-            return [...acc, { ...item, amount: item.amount - 1 }];
-          }
-        } else {
-          return [...acc, item];
-        }
-      }, [] as CartItemType[])
-    );
-  };
-
-  if (isLoading) return <LinearProgress />;
-  if (error) return <div>Something went wrong...</div>;
+  if (!items) return <LinearProgress />;
 
   return (
     <Wrapper>
@@ -89,21 +39,17 @@ const App = () => {
         open={isCartOpen}
         onClose={() => setIsCartOpen(false)}
       >
-        <Cart
-          cartItems={cartItems}
-          addToCart={handleAddToCart}
-          removeFromCart={handleRemoveFromCart}
-        />
+        <Cart cartItems={items} />
       </Drawer>
       <StyledButton onClick={() => setIsCartOpen(true)}>
-        <Badge badgeContent={getTotalItems(cartItems)} color="error">
+        <Badge badgeContent={getTotalItems(items)} color="error">
           <AddShoppingCartIcon />
         </Badge>
       </StyledButton>
       <Grid container spacing={3}>
-        {data?.map((item) => (
+        {products?.map((item: CartItemType) => (
           <Grid item key={item.id} xs={12} sm={4}>
-            <Item item={item} handleAddToCart={handleAddToCart} />
+            <Item item={item} />
           </Grid>
         ))}
       </Grid>

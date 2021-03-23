@@ -1,5 +1,6 @@
+import { useDispatch } from "react-redux";
 import Button from "@material-ui/core/Button";
-
+import { addToCart } from "../../state/actions";
 // Types
 import { CartItemType } from "../../Types";
 
@@ -8,10 +9,12 @@ import { Wrapper } from "./Item.styles";
 
 type Props = {
   item: CartItemType;
-  handleAddToCart: (item: CartItemType) => void;
+  // handleAddToCart: (item: CartItemType) => void;
 };
 
-const Item: React.FC<Props> = ({ item, handleAddToCart }) => {
+const Item: React.FC<Props> = ({ item }) => {
+  const dispatch = useDispatch();
+
   const imgURL = item.image.slice(0, 21) + "herokuapp." + item.image.slice(21);
   return (
     <Wrapper>
@@ -21,7 +24,7 @@ const Item: React.FC<Props> = ({ item, handleAddToCart }) => {
         <p>{item.description}</p>
         <h3>${item.price}</h3>
       </div>
-      <Button onClick={() => handleAddToCart(item)}>Add to Cart</Button>
+      <Button onClick={() => dispatch(addToCart(item))}>Add to Cart</Button>
     </Wrapper>
   );
 };

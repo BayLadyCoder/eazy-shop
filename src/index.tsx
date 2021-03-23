@@ -1,16 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import rootReducer from "./state/reducers";
 
-const client = new QueryClient();
+const store = createStore(rootReducer, applyMiddleware(thunk));
 
 ReactDOM.render(
-  <QueryClientProvider client={client}>
-    <Provider>
-      <App />
-    </Provider>
-  </QueryClientProvider>,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById("root")
 );

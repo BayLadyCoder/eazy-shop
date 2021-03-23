@@ -1,65 +1,60 @@
-import { CartItemType } from './../Types';
+import { combineReducers } from 'redux';
 import {
-    API_GET_ALL_PRODUCTS,
+    API_GET_ALL_PRODUCTS_SUCCESS,
+    // API_GET_ALL_PRODUCTS_FAIL,
     ADD_ITEM_TO_CART,
     REMOVE_ITEM_FROM_CART,
-    GET_TOTAL_ITEMS_IN_CART
 } from './actions'
-import { CartItemType } from '../Types'
 
+// Types
+import { CartItemType, ProductState, CartState, Actions } from '../Types'
 
-type ProductState = {
-    products: CartItemType[];
-}
-type CartState = {
-    items: CartItemType[];
-}
-
-type Action = {
-    type: string;
-    payload: any
-}
 
 const ProductInitialState = {
-    products: []
+    products: [],
+    isLoading: true
 }
 const CartInitialState = {
-    items: []
+    items: [],
 }
 
 
 
-export const productReducer = (state: ProductState = ProductInitialState, action: Action) {
+export const productReducer = (state: ProductState = ProductInitialState, action: Actions): ProductState => {
     const { type, payload } = action;
 
     switch (type) {
-        case API_GET_ALL_PRODUCTS:
-            return { products: payload }
+        case API_GET_ALL_PRODUCTS_SUCCESS:
+            return { products: payload, isLoading: false }
         default:
             return state
 
     }
 }
 
-export const cartReducer = (state: CartState = CartInitialState, action: Action) => {
+
+
+export const cartReducer = (state: CartState = CartInitialState, action: Actions): CartState => {
     const { type, payload } = action;
+    let newStateItems: CartItemType[];
 
     switch (type) {
         case ADD_ITEM_TO_CART:
-            const isItemInCart = state.items.find((item) => item.id === payload.id);
+            const isItemInCart = state.items.find((item) => item.id === payload?.id);
             if (isItemInCart) {
-                return state.items.map((item) => {
-                    if (item.id === payload.id) {
+                newStateItems = state.items.map((item) => {
+                    if (item.id === payload?.id) {
                         return { ...item, amount: item.amount + 1 };
                     } else {
                         return item;
                     }
                 });
             } else {
-                return [...state.items, { ...payload, amount: 1 }];
+                newStateItems = [...state.items, { ...payload, amount: 1 }];
             }
+            return { ...state, items: newStateItems }
         case REMOVE_ITEM_FROM_CART:
-            const newState = state.items.reduce((acc: CartItemType[], item: CartItemType) => {
+            newStateItems = state.items.reduce((acc: CartItemType[], item: CartItemType) => {
                 if (item.id === payload) {
                     if (item.amount === 0) {
                         return acc;
@@ -70,11 +65,20 @@ export const cartReducer = (state: CartState = CartInitialState, action: Action)
                     return [...acc, item];
                 }
             }, [] as CartItemType[])
-            return newState
-        case GET_TOTAL_ITEMS_IN_CART:
-            return payload.reduce((acc: number, item: CartItemType) => acc + item.amount, 0)
+            return { ...state, items: newStateItems }
         default:
             return state
 
     }
 }
+
+
+
+
+
+const rootReducer = combineReducers({
+    products: productReducer,
+    cart: cartReducer
+})
+
+export default rootReducer;

@@ -1,16 +1,17 @@
 import Button from "@material-ui/core/Button";
-
 import { CartItemType } from "../../Types";
-
 import { Wrapper } from "./CartItem.styles";
+import { useDispatch } from "react-redux";
+
+import { addToCart, removeItemFromCart } from "../../state/actions";
 
 type Props = {
   item: CartItemType;
-  addToCart: (item: CartItemType) => void;
-  removeFromCart: (id: number) => void;
 };
 
-const CartItem: React.FC<Props> = ({ item, addToCart, removeFromCart }) => {
+const CartItem: React.FC<Props> = ({ item }) => {
+  const dispatch = useDispatch();
+
   const imgURL: string =
     item.image.slice(0, 21) + "herokuapp." + item.image.slice(21);
 
@@ -28,7 +29,7 @@ const CartItem: React.FC<Props> = ({ item, addToCart, removeFromCart }) => {
             size="small"
             disableElevation
             variant="contained"
-            onClick={() => removeFromCart(item.id)}
+            onClick={() => dispatch(removeItemFromCart(item.id))}
           >
             -
           </Button>
@@ -38,7 +39,7 @@ const CartItem: React.FC<Props> = ({ item, addToCart, removeFromCart }) => {
             size="small"
             disableElevation
             variant="contained"
-            onClick={() => addToCart(item)}
+            onClick={() => dispatch(addToCart(item))}
           >
             +
           </Button>
