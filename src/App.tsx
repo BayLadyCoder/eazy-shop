@@ -7,25 +7,29 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 import Grid from "@material-ui/core/Grid";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import Badge from "@material-ui/core/Badge";
-import Cart from "./Cart/Cart";
+import Cart from "./components/Cart/Cart";
 
 // Styles
 import { StyledButton, Wrapper } from "./App.styles";
-import Item from "./Item/Item";
+import Item from "./components/Item/Item";
 
 //Types
-export type CartItemType = {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  image: string;
-  amount: number;
-};
+import { CartItemType } from "./Types";
+// export type CartItemType = {
+//   id: number;
+//   title: string;
+//   description: string;
+//   category: string;
+//   price: number;
+//   image: string;
+//   amount: number;
+// };
 
-const getProducts = async (): Promise<CartItemType[]> =>
-  await (await fetch("https://fakestoreapi.herokuapp.com/products")).json();
+const getProducts = async (): Promise<CartItemType[]> => {
+  const res = await fetch("https://fakestoreapi.herokuapp.com/products");
+  const data = await res.json();
+  return data;
+};
 
 const App = () => {
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
