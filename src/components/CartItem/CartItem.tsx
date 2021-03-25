@@ -1,4 +1,3 @@
-import Button from "@material-ui/core/Button";
 import { CartItemType } from "../../Types";
 import { Wrapper } from "./CartItem.styles";
 import { useDispatch } from "react-redux";
