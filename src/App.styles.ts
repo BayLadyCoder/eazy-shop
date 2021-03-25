@@ -7,8 +7,6 @@ export const Wrapper = styled.div`
   color: #383838;
 
   h1 {
-    /* text-align: center; */
-    font-family: "Lobster", cursive;
     font-family: "Train One", cursive;
     font-size: 2.6rem;
     margin: 0px;

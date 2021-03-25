@@ -18,12 +18,7 @@ export const Wrapper = styled.aside`
     align-items: center;
   }
 
-  .checkout-button {
-    /* font-weight: bold; */
-  }
-
   .checkout-total {
-    /* color: red; */
     font-weight: normal;
   }
 `;
