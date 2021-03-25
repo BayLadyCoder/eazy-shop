@@ -27,13 +27,11 @@ const App: React.FC = () => {
   const getTotalItems = (items: CartItemType[]) =>
     items.reduce((acc: number, item) => acc + item.amount, 0);
 
-  console.log(items);
-
   if (!items) return <LinearProgress />;
 
   return (
     <Wrapper>
-      <h1>Shopping App</h1>
+      <h1>Eazy Shop</h1>
       <Drawer
         anchor="right"
         open={isCartOpen}

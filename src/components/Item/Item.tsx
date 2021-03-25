@@ -24,7 +24,13 @@ const Item: React.FC<Props> = ({ item }) => {
         <p>{item.description}</p>
         <h3>${item.price}</h3>
       </div>
-      <Button onClick={() => dispatch(addToCart(item))}>Add to Cart</Button>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => dispatch(addToCart(item))}
+      >
+        Add to Cart
+      </Button>
     </Wrapper>
   );
 };
