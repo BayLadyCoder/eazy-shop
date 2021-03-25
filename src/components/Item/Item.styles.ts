@@ -22,4 +22,17 @@ export const Wrapper = styled.div`
     padding: 1.5rem;
     height: 100%;
   }
+
+  .item-title {
+    font-weight: bold;
+  }
+
+  .item-description {
+    color: #7d7d7d;
+  }
+
+  .item-price {
+    font-size: 1.3rem;
+    font-weight: ;
+  }
 `;

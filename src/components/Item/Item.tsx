@@ -20,9 +20,9 @@ const Item: React.FC<Props> = ({ item }) => {
     <Wrapper>
       <img src={imgURL} alt={item.title} />
       <div>
-        <h3>{item.title}</h3>
-        <p>{item.description}</p>
-        <h3>${item.price}</h3>
+        <p className="item-title">{item.title}</p>
+        <p className="item-description">{item.description}</p>
+        <p className="item-price">${item.price}</p>
       </div>
       <Button
         variant="contained"
