@@ -9,7 +9,6 @@ import { Wrapper } from "./Item.styles";
 
 type Props = {
   item: CartItemType;
-  // handleAddToCart: (item: CartItemType) => void;
 };
 
 const Item: React.FC<Props> = ({ item }) => {

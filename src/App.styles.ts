@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   font-family: Arial, Helvetica, sans-serif;
   margin: 0px 30px 30px 30px;
   color: #383838;
-
+  background-color: #f5f5f5;
   h1 {
     font-family: "Train One", cursive;
     font-size: 2.6rem;

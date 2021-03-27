@@ -1,25 +1,24 @@
 import { combineReducers } from "redux";
 import {
   API_GET_ALL_PRODUCTS_SUCCESS,
-  // API_GET_ALL_PRODUCTS_FAIL,
   ADD_ITEM_TO_CART,
   REMOVE_ITEM_FROM_CART,
 } from "./actions";
 
 // Types
-import { CartItemType, ProductState, CartState, Actions } from "../Types";
+import { CartItemType, ProductState, CartState, ActionTypes } from "../Types";
 
-const ProductInitialState = {
+const productInitialState = {
   products: [],
   isLoading: true,
 };
-const CartInitialState = {
+const cartInitialState = {
   items: [],
 };
 
 export const productReducer = (
-  state: ProductState = ProductInitialState,
-  action: Actions
+  state: ProductState = productInitialState,
+  action: ActionTypes<CartItemType[]>
 ): ProductState => {
   const { type, payload } = action;
 
@@ -32,33 +31,38 @@ export const productReducer = (
 };
 
 export const cartReducer = (
-  state: CartState = CartInitialState,
-  action: Actions
+  state: CartState = cartInitialState,
+  action: ActionTypes<CartItemType | number>
 ): CartState => {
   const { type, payload } = action;
   let newStateItems: CartItemType[];
 
   switch (type) {
     case ADD_ITEM_TO_CART:
-      const isItemInCart = state.items.find((item) => item.id === payload?.id);
+      let isItemInCart;
+      if (typeof payload === "object")
+        isItemInCart = state.items.find((item) => {
+          return item.id === payload.id;
+        });
       if (isItemInCart) {
         newStateItems = state.items.map((item) => {
-          if (item.id === payload?.id) {
+          if (typeof payload === "object" && item.id === payload.id) {
             return { ...item, amount: item.amount + 1 };
           } else {
             return item;
           }
         });
       } else {
-        newStateItems = [...state.items, { ...payload, amount: 1 }];
+        if (typeof payload === "object")
+          newStateItems = [...state.items, { ...payload, amount: 1 }];
       }
-      return { ...state, items: newStateItems };
+      return { ...state, items: newStateItems! };
     case REMOVE_ITEM_FROM_CART:
       newStateItems = state.items.reduce(
         (acc: CartItemType[], item: CartItemType) => {
           if (item.id === payload) {
             if (item.amount === 1) {
-              return acc.filter((item) => item.id !== payload.id);
+              return acc.filter((item) => item.id !== payload);
             } else {
               return [...acc, { ...item, amount: item.amount - 1 }];
             }

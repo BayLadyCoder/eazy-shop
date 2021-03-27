@@ -40,9 +40,6 @@ export const Wrapper = styled.div`
 
   .icon-button:hover {
     background-color: #c90248;
-    /* border-radius: 50%;
-    width: 40px;
-    height: 40px; */
   }
 
   .button {

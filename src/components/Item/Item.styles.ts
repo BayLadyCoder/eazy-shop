@@ -9,10 +9,11 @@ export const Wrapper = styled.div`
   border-radius: 20px;
   height: 100%;
   color: #383838;
+  background-color: #ffffff;
 
   img {
     margin-top: 1.5rem;
-    max-height: 200px;
+    max-height: 150px;
     object-fit: contain;
     border-radius: 20px 20px 0 0;
   }
